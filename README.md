@@ -47,7 +47,7 @@ Example Run `ng generate component pages/marketplace` to create a new page is Ma
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
 
-## Build module for iCloud PlatForm
+## Build module 
 
 - Prepare  
 ```
