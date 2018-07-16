@@ -4,7 +4,6 @@ Powered by [StartAngular](http://startangular.com/)
 ### Tasks to do for running the project:
 Starter Project
 ===
-Starter for iCloud Platform
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.0.
 
