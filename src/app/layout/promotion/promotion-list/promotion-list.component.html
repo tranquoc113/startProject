@@ -1,0 +1,51 @@
+<div class="admin-layout">
+    <div class=" nav-fixed-top cp-toolbar">
+        <button routerLink="add" type="button" class="btn btn-primary btn-sm">
+            <i class="fa fa-plus" aria-hidden="true"></i> Add
+        </button>
+    </div>
+
+    <div class="cp-content">
+        <div class="container-fluid p-1">
+            <table class="table">
+                <caption>List of PROMOTIN</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">name</th>
+                        <th scope="col">organId</th>
+                        <th scope="col">fromDate</th>
+                        <th scope="col">toDate</th>
+                        <th scope="col">fromHours</th>
+                        <th scope="col">toHours</th>
+                        <th scope="col">dayOfWeeks</th>
+                        <th scope="col">priority</th>
+                        <th>#</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of data; let i = index">
+                        <th scope="row">{{ i+1 }}</th>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.organId }}</td>
+                        <td>{{item.fromDate | date: 'dd-MM-yyyy' }}</td>
+                        <td>{{item.toDate | date: 'dd-MM-yyyy' }}</td>
+                        <td>{{item.fromHours | date: 'dd-MM-yyyy' }}</td>
+                        <td>{{item.toHours | date: 'dd-MM-yyyy' }}</td>
+                        <td>
+                            <span *ngFor="let day of item.dayOfWeeks; let i = index">
+                        <span *ngIf="day ===8"> CN</span>
+                            <span *ngIf="day  !== 8">     Thứ {{day}}</span>
+                            <span *ngIf="i!==item.dayOfWeeks.length-1">,</span>
+                            </span>
+                        </td>
+                        <td>{{ item.priority }}</td>
+                        <td>
+                            <span routerLink="detail/{{ item.uuid }}" class=" fts-100 badge badge-primary "><i class="fa fa-edit "></i></span>
+                            <span (click)="deleteItem(item.uuid) " class="ml-1 fts-100 badge badge-danger "><i class="fa fa-trash "></i></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>

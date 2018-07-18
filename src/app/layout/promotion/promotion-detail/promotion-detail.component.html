@@ -1,0 +1,209 @@
+<div class="admin-layout">
+    <div class=" nav-fixed-top cp-toolbar">
+        <button (click)="back()" class="btn btn-primary btn-sm" type="button">
+            <i class="fa fa-arrow-left" aria-hidden="true"></i> Trở lại
+        </button>
+        <button (click)="resetForm()" type="button" class="btn btn-primary btn-sm ml-1">
+            <i class="fa fa-plus" aria-hidden="true"></i> Thêm
+        </button>
+
+        <button [disabled]="!promotionForm.form.valid" type="button" class="btn btn-success btn-sm ml-1" (click)="onSave()">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu
+        </button>
+    </div>
+    <div class="cp-content">
+        <div class="container-fluid p-0">
+            <form #promotionForm="ngForm" #myForm>
+                <div class="row m-0 p-0 mt-3">
+                    <div class="col-sm-6">
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label font-weight-bold">Mã </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control form-control-sm"  [(ngModel)]="promotion.uuid" name="uuid" required #uuid="ngModel" >
+                                <div *ngIf="uuid.dirty ||uuid.touched" class="text-danger mt-2 text-df">
+                                    <div *ngIf="uuid.hasError('required')" class="text-danger mt-2 text-df">
+                                        <i class="fa fa-exclamation-triangle"></i> uuid không để rỗng
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label font-weight-bold "> Độ ưu tiên
+                                        <span class="required"></span>:</label>
+                            <div class="col-sm-8">
+                                <input type="number" min="1" class="form-control form-control-sm text-right" [(ngModel)]="promotion.priority" name="priority" #priority="ngModel" required oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                                <div *ngIf="priority.dirty || priority.touched" class="text-danger mt-2 text-df">
+                                    <div *ngIf="priority.hasError('required')" class="text-danger mt-2 text-df">
+                                        <i class="fa fa-exclamation-triangle"></i> Độ ưu tiên không để rỗng
+                                    </div>
+                                    <div *ngIf="priority.errors?.min" class="text-danger mt-2 text-df">
+                                        <i class="fa fa-exclamation-triangle"></i> Giá trị nhập không nhỏ hơn 1
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row m-0 p-0">
+                    <div class="col">
+                        <div class="row">
+                            <label class="col-sm-2 col-form-label font-weight-bold pr-0">
+                                        Tên chương trình
+                                        <span class="required"></span>:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control form-control-sm" [(ngModel)]="promotion.name" name="name" #name="ngModel" required #txtName>
+                                <div *ngIf="name.dirty ||name.touched" class="text-danger mt-2 text-df">
+                                    <div *ngIf="name.hasError('required')" class="text-danger mt-2 text-df">
+                                        <i class="fa fa-exclamation-triangle"></i> Tên không để rỗng
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row ml-0 mr-0 mt-3 p-0">
+                    <div class="col">
+                        <div class="row">
+                            <label class="col-sm-2 col-form-label  font-weight-bold">Mô tả:
+                                    </label>
+                            <div class="col-sm-10">
+                                <textarea rows="3" class="form-control form-control-sm" style="resize: none" [(ngModel)]="promotion.brief" name="brief"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-0 p-0 mt-3">
+                    <div class="col-sm-6">
+                        <div class="form-group row">
+                            <label class="col-4 col-form-label font-weight-bold pr-0">Từ ngày
+                                        <span class="required"></span>:</label>
+                            <div class="col-8">
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control form-control-sm" #startDate="bsDatepicker" [bsConfig]="bsDatePickerConfig" bsDatepicker [maxDate]="toDate" [(ngModel)]="fromDate" name="dayStart" #dayStart="ngModel" required (bsValueChange)="focusOutFromDate($event)">
+                                    <div (click)="startDate.toggle()" class="input-group-append">
+                                        <i class="fa fa-calendar input-group-text"></i>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="dayStart.dirty || dayStart.touched" class="text-danger mt-2 text-df">
+                                    <div *ngIf="dayStart.hasError('required')" class="text-danger mt-2 text-df">
+                                        <i class="fa fa-exclamation-triangle"></i> Từ ngày không để rỗng
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group row">
+                            <label class="col-4 col-form-label lbl-bold pr-0 font-weight-bold pr-0">Đến ngày
+                                        <span class="required"></span>:</label>
+                            <div class="col-8">
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control form-control-sm" [bsConfig]="bsDatePickerConfig" #endDate="bsDatepicker" [minDate]="fromDate" bsDatepicker [(ngModel)]="toDate" name="dayEnd" #dayEnd="ngModel" required (bsValueChange)="focusOutToDate($event)">
+                                    <div (click)="endDate.toggle()" class="input-group-append">
+                                        <i class="fa fa-calendar input-group-text"></i>
+                                    </div>
+                                </div>
+                                <div *ngIf="dayEnd.dirty || dayEnd.touched" class="text-danger mt-2 text-df">
+                                    <div *ngIf="dayEnd.hasError('required')" class="text-danger mt-2 text-df">
+                                        <i class="fa fa-exclamation-triangle"></i> Đến ngày không để rỗng
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row ml-0 mr-0 p-0">
+                    <div class="col">
+                        <div class="row">
+                            <label class="col-sm-2 col-form-label  font-weight-bold align-self-center">Từ giờ :</label>
+                            <div class="col-sm-2">
+                                <timepicker [showMeridian]="false" [(ngModel)]="fromHours" name="fromHour" #fromHour="ngModel" (isValid)="statusFromHour = $event"></timepicker>
+                                <div *ngIf="!statusFromHour" class="text-danger mt-2 text-df">
+                                    <i class="fa fa-exclamation-triangle"></i> Giờ không có gía trị
+                                </div>
+                            </div>
+                            <label class="col-sm-1 col-form-label  font-weight-bold align-self-center"> Đến giờ:</label>
+                            <div class="col-sm-4">
+                                <timepicker [showMeridian]="false" [(ngModel)]="toHours" name="toHour" #toHour="ngModel" (isValid)="statusToHour = $event"></timepicker>
+                                <div *ngIf="!statusToHour" class="text-danger mt-2 text-df">
+                                    <i class="fa fa-exclamation-triangle"></i> Giờ không có giá trị
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row ml-0 mr-0 mt-3 p-0">
+                    <div class="col">
+                        <div class="row">
+                            <label class="col-sm-2 col-form-label  font-weight-bold">Các ngày trong tuần :
+                                    </label>
+                            <div class="col-sm-10">
+                                <div class="form-group">
+                                    <div class="check-box-i">
+                                        <div (click)="onSelectDay(2)" [ngClass]="{'check-box-active': promotion.dayOfWeeks.indexOf(2) !==-1 }" class="check-box-item">T2
+                                        </div>
+                                        <div (click)="onSelectDay(3)" [ngClass]="{'check-box-active': promotion.dayOfWeeks.indexOf(3) !==-1}" class="check-box-item">T3
+                                        </div>
+                                        <div (click)="onSelectDay(4)" [ngClass]="{'check-box-active': promotion.dayOfWeeks.indexOf(4) !==-1 }" class="check-box-item">T4
+                                        </div>
+                                        <div (click)="onSelectDay(5)" [ngClass]="{'check-box-active': promotion.dayOfWeeks.indexOf(5) !==-1}" class="check-box-item">T5
+                                        </div>
+                                        <div (click)="onSelectDay(6)" [ngClass]="{'check-box-active': promotion.dayOfWeeks.indexOf(6) !==-1}" class="check-box-item">T6
+                                        </div>
+                                        <div (click)="onSelectDay(7)" [ngClass]="{'check-box-active': promotion.dayOfWeeks.indexOf(7) !==-1 }" class="check-box-item">T7
+                                        </div>
+                                        <div (click)="onSelectDay(8)" [ngClass]="{'check-box-active': promotion.dayOfWeeks.indexOf(8) !==-1}" class="check-box-item">CN
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <!-- <tabset #staticTabs>
+                <tab customClass="customClass rounded-0">
+                    <ng-template tabHeading>
+                        <span class="font-weight-bold">
+                            <i class="fa fa-file-text" aria-hidden="true"></i>
+                            Thông tin chung
+                        </span>
+                    </ng-template>
+                    
+                </tab>
+
+                <tab customClass="customClass rounded-0">
+                    <ng-template tabHeading>
+                        <span class="font-weight-bold">
+                            <i class="fa fa-bars" aria-hidden="true"></i>
+                            Mặt hàng
+                            <span class="badge badge-primary">{{ countCommodities }}</span>
+                        </span>
+                    </ng-template>
+                </tab>
+
+                <tab customClass="customClass rounded-0">
+                    <ng-template tabHeading>
+                        <span class="font-weight-bold">
+                            <i class="fa fa-gift" aria-hidden="true"></i>
+                            Mặt hàng khuyến mãi
+                            <span class="badge badge-primary">{{countCommoditiesPromotion}}</span>
+                        </span>
+                    </ng-template>
+
+
+                </tab>
+            </tabset> -->
+        </div>
+    </div>
+</div>
