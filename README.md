@@ -26,7 +26,7 @@ npm install -g @angular/cli
 
 npm install -g typescript
 
-npm install
+npm install in project
 ```
 
 **3.	Start the server using the command**
